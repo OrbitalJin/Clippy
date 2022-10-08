@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfacekgUhwq.ui'
+## Form generated from reading UI file 'interfaceJTgFOZ.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.5
 ##
@@ -98,9 +98,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3 = QHBoxLayout(self.displayFrame)
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.clipsListWidget = QListWidget(self.displayFrame)
-        QListWidgetItem(self.clipsListWidget)
-        QListWidgetItem(self.clipsListWidget)
-        QListWidgetItem(self.clipsListWidget)
         self.clipsListWidget.setObjectName(u"clipsListWidget")
         self.clipsListWidget.setMaximumSize(QSize(320, 16777215))
         self.clipsListWidget.setStyleSheet(u"QListWidget{\n"
@@ -205,17 +202,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.searchBar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Clipboard History Filter", None))
-
-        __sortingEnabled = self.clipsListWidget.isSortingEnabled()
-        self.clipsListWidget.setSortingEnabled(False)
-        ___qlistwidgetitem = self.clipsListWidget.item(0)
-        ___qlistwidgetitem.setText(QCoreApplication.translate("MainWindow", u"yo this is a test yo", None));
-        ___qlistwidgetitem1 = self.clipsListWidget.item(1)
-        ___qlistwidgetitem1.setText(QCoreApplication.translate("MainWindow", u"yo this is a test yosdf;lkjdsfkjsd", None));
-        ___qlistwidgetitem2 = self.clipsListWidget.item(2)
-        ___qlistwidgetitem2.setText(QCoreApplication.translate("MainWindow", u"sdfsdflkj kl112214234", None));
-        self.clipsListWidget.setSortingEnabled(__sortingEnabled)
-
         self.shortcutTitleLabel.setText(QCoreApplication.translate("MainWindow", u"Shortcuts:", None))
         self.shortcutLabel1.setText(QCoreApplication.translate("MainWindow", u"Clear: ctrl+alt+c", None))
         self.shortcutLabel2.setText(QCoreApplication.translate("MainWindow", u"Clear: ctrl+alt+c", None))

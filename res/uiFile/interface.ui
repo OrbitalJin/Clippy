@@ -165,21 +165,6 @@ QListWidget::item:selected {
 background-color:  #495366;
 }</string>
             </property>
-            <item>
-             <property name="text">
-              <string>yo this is a test yo</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>yo this is a test yosdf;lkjdsfkjsd</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>sdfsdflkj kl112214234</string>
-             </property>
-            </item>
            </widget>
           </item>
           <item>

@@ -1,6 +1,8 @@
 from PySide2.QtGui import *
 from PySide2.QtCore import *
 from PySide2.QtWidgets import *
+from utils.clip_worker import ClipListener
+import pyperclip as clip
 import sys, os
 
 from interface import Ui_MainWindow
@@ -10,16 +12,40 @@ class App(QMainWindow):
 		QMainWindow.__init__(self)
 		self.ui = Ui_MainWindow()
 		self.ui.setupUi(self)
-		self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
-		self.setWindowTitle("ClipPy")
-		self.setRoundEdges()
+		self.adjustUi()
+		self.ClipListener = ClipListener()
+		self.connectSignalsAndSlots()
+		self.ClipListener.start()
+		
 		self.x_shift = 0#-10
 		self.y_shift = 0#-360
 		self.center()
+
+		QShortcut(QKeySequence('Ctrl+Q'), self).activated.connect(lambda: self.close())
+
+	def adjustUi(self):
+		self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint)
+		self.setWindowTitle("ClipPy")
+		self.setRoundEdges()
 		self.setFocus()
 		self.ui.searchBar.setFocus()
-		QShortcut(QKeySequence("Ctrl+Q"), self, self.close)
-X
+
+	def connectSignalsAndSlots(self):
+		self.ClipListener.newClipSignalEvent.connect(lambda clip: self.newClipEventSlot(clip))
+		self.ClipListener.unavailableClipEvent.connect(lambda status: print(f"ClipListener: {status}"))
+		self.ui.settingsBtn.clicked.connect(lambda: print(self.ClipListener.ThreadActive))
+
+		self.ui.clipsListWidget.itemDoubleClicked.connect(self.itemClipActivatedCallback)
+
+	@Slot()
+	def newClipEventSlot(self, clip: str):
+		self.ui.clipsListWidget.addItem(clip)
+
+
+	def itemClipActivatedCallback(self, item: QListWidgetItem):
+		print(f"{item.text()} copied to the clipboard!")
+		clip.copy(item.text())
+
 	def center(self):
 	    frameGm = self.frameGeometry()
 	    screen = QApplication.desktop().screenNumber(QApplication.desktop().cursor().pos())
@@ -37,6 +63,10 @@ X
 	def leaveEvent(self, QEvent):
 		if not self.isActiveWindow():
 			print("yo")
+
+	def close(self):
+		self.ClipListener.stop()
+		self.ClipListener.wait()
 
 if __name__ == "__main__":
 	app = QApplication(sys.argv)
