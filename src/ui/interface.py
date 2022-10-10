@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfaceJTgFOZ.ui'
+## Form generated from reading UI file 'interfaceXPjAmj.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.5
 ##
@@ -18,7 +18,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(480, 230)
+        MainWindow.resize(480, 250)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.centralwidget.setStyleSheet(u"border: none;")
@@ -31,10 +31,6 @@ class Ui_MainWindow(object):
         self.mainFrame.setStyleSheet(u"/*Globals*/\n"
 "QLabel{\n"
 "   color: grey;\n"
-"}\n"
-"\n"
-"QFrame{\n"
-"\n"
 "}\n"
 "\n"
 "/*Frames*/\n"
@@ -69,7 +65,16 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QVBoxLayout(self.mainFrame)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_2.setContentsMargins(-1, 6, -1, 0)
+        self.closeAppBtn = QPushButton(self.mainFrame)
+        self.closeAppBtn.setObjectName(u"closeAppBtn")
+        self.closeAppBtn.setMinimumSize(QSize(10, 10))
+        self.closeAppBtn.setMaximumSize(QSize(10, 10))
+        self.closeAppBtn.setCursor(QCursor(Qt.PointingHandCursor))
+        self.closeAppBtn.setStyleSheet(u"color: grey;")
+
+        self.verticalLayout_2.addWidget(self.closeAppBtn)
+
         self.searchBarFrame = QFrame(self.mainFrame)
         self.searchBarFrame.setObjectName(u"searchBarFrame")
         self.searchBarFrame.setMaximumSize(QSize(16777215, 50))
@@ -83,7 +88,9 @@ class Ui_MainWindow(object):
         self.searchBar.setObjectName(u"searchBar")
         self.searchBar.setMinimumSize(QSize(283, 28))
         self.searchBar.setMaximumSize(QSize(283, 28))
-        self.searchBar.setStyleSheet(u"")
+        self.searchBar.setStyleSheet(u"QLineEdit{\n"
+"   selection-background-color: #4C566A;\n"
+"}")
         self.searchBar.setAlignment(Qt.AlignCenter)
 
         self.horizontalLayout.addWidget(self.searchBar)
@@ -101,23 +108,16 @@ class Ui_MainWindow(object):
         self.clipsListWidget.setObjectName(u"clipsListWidget")
         self.clipsListWidget.setMaximumSize(QSize(320, 16777215))
         self.clipsListWidget.setStyleSheet(u"QListWidget{\n"
-"\n"
-"border-right:  1px solid 4F576C;\n"
+"   border-right:  1px solid grey;\n"
+"   padding-right:  15px;\n"
 "}\n"
 "\n"
-"QListWidget::item:selected {\n"
-"background-color:  #495366;\n"
-"}")
+"QListView::item:selected{\n"
+"   background-color:  #4C566A;\n"
+"}\n"
+"")
 
         self.horizontalLayout_3.addWidget(self.clipsListWidget)
-
-        self.verticalSeparator = QFrame(self.displayFrame)
-        self.verticalSeparator.setObjectName(u"verticalSeparator")
-        self.verticalSeparator.setStyleSheet(u"")
-        self.verticalSeparator.setFrameShape(QFrame.VLine)
-        self.verticalSeparator.setFrameShadow(QFrame.Sunken)
-
-        self.horizontalLayout_3.addWidget(self.verticalSeparator)
 
         self.shortcutsFrame = QFrame(self.displayFrame)
         self.shortcutsFrame.setObjectName(u"shortcutsFrame")
@@ -125,7 +125,9 @@ class Ui_MainWindow(object):
         self.shortcutsFrame.setFrameShape(QFrame.StyledPanel)
         self.shortcutsFrame.setFrameShadow(QFrame.Raised)
         self.verticalLayout_3 = QVBoxLayout(self.shortcutsFrame)
+        self.verticalLayout_3.setSpacing(5)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
         self.shortcutTitleLabel = QLabel(self.shortcutsFrame)
         self.shortcutTitleLabel.setObjectName(u"shortcutTitleLabel")
         self.shortcutTitleLabel.setAlignment(Qt.AlignCenter)
@@ -201,6 +203,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        self.closeAppBtn.setText(QCoreApplication.translate("MainWindow", u"x", None))
         self.searchBar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Clipboard History Filter", None))
         self.shortcutTitleLabel.setText(QCoreApplication.translate("MainWindow", u"Shortcuts:", None))
         self.shortcutLabel1.setText(QCoreApplication.translate("MainWindow", u"Clear: ctrl+alt+c", None))

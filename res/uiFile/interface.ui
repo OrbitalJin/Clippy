@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>480</width>
-    <height>230</height>
+    <height>250</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,10 +39,6 @@
        <string notr="true">/*Globals*/
 QLabel{
 	color: grey;
-}
-
-QFrame{
-
 }
 
 /*Frames*/
@@ -84,11 +80,36 @@ QFrame{
         <number>0</number>
        </property>
        <property name="topMargin">
-        <number>0</number>
+        <number>6</number>
        </property>
        <property name="bottomMargin">
         <number>0</number>
        </property>
+       <item>
+        <widget class="QPushButton" name="closeAppBtn">
+         <property name="minimumSize">
+          <size>
+           <width>10</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>10</width>
+           <height>10</height>
+          </size>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">color: grey;</string>
+         </property>
+         <property name="text">
+          <string>x</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QFrame" name="searchBarFrame">
          <property name="maximumSize">
@@ -125,7 +146,9 @@ QFrame{
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true"/>
+             <string notr="true">QLineEdit{
+	selection-background-color: #4C566A;
+}</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -157,23 +180,14 @@ QFrame{
             </property>
             <property name="styleSheet">
              <string notr="true">QListWidget{
-
-border-right:  1px solid 4F576C;
+	border-right:  1px solid grey;
+	padding-right:  15px;
 }
 
-QListWidget::item:selected {
-background-color:  #495366;
-}</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="Line" name="verticalSeparator">
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
+QListView::item:selected{
+	background-color:  #4C566A;
+}
+</string>
             </property>
            </widget>
           </item>
@@ -189,6 +203,21 @@ background-color:  #495366;
              <enum>QFrame::Raised</enum>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_3">
+             <property name="spacing">
+              <number>5</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QLabel" name="shortcutTitleLabel">
                <property name="text">
