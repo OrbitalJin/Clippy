@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'interfaceXPjAmj.ui'
+## Form generated from reading UI file 'interfaceVgnhJH.ui'
 ##
 ## Created by: Qt User Interface Compiler version 5.15.5
 ##
@@ -206,10 +206,10 @@ class Ui_MainWindow(object):
         self.closeAppBtn.setText(QCoreApplication.translate("MainWindow", u"x", None))
         self.searchBar.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Clipboard History Filter", None))
         self.shortcutTitleLabel.setText(QCoreApplication.translate("MainWindow", u"Shortcuts:", None))
-        self.shortcutLabel1.setText(QCoreApplication.translate("MainWindow", u"Clear: ctrl+alt+c", None))
-        self.shortcutLabel2.setText(QCoreApplication.translate("MainWindow", u"Clear: ctrl+alt+c", None))
-        self.shortcutLabel3.setText(QCoreApplication.translate("MainWindow", u"Clear: ctrl+alt+c", None))
-        self.shortcutLabel4.setText(QCoreApplication.translate("MainWindow", u"Clear: ctrl+alt+c", None))
+        self.shortcutLabel1.setText(QCoreApplication.translate("MainWindow", u"Clear: CTRL+ALT+H", None))
+        self.shortcutLabel2.setText(QCoreApplication.translate("MainWindow", u"Last: CTRL+ALT+Z", None))
+        self.shortcutLabel3.setText(QCoreApplication.translate("MainWindow", u"Grab: CTRL+ALT+G", None))
+        self.shortcutLabel4.setText(QCoreApplication.translate("MainWindow", u"Quit: CTRL+Q", None))
         self.statusLabel.setText(QCoreApplication.translate("MainWindow", u"ClipPy v.0.1", None))
         self.settingsBtn.setText("")
     # retranslateUi

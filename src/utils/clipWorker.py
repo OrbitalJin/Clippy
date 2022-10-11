@@ -1,7 +1,5 @@
 from PySide2.QtCore import QThread, Signal
 import pyperclip as clip
-import time
-
 
 class ClipListener(QThread):
 	newClipSignalEvent = Signal(str)
@@ -13,11 +11,14 @@ class ClipListener(QThread):
 		print(f"ClipListener is_available: {self.__ThreadActive}")
 
 	def run(self):
-		while True:
-			if self.__ThreadActive:
-				clip.waitForNewPaste(timeout=None)
-				if not self.isPaused: self.newClipSignalEvent.emit(clip.paste())
-			else: break
+		while self.__ThreadActive:
+			try:
+				if self.__ThreadActive:
+					clip.waitForNewPaste(timeout=1) 	#Timeout is set to 1 because this was preventing the QThread from safely quitting
+					if not self.isPaused: self.newClipSignalEvent.emit(clip.paste())
+				else: break
+			except:
+				pass
 
 	def setPaused(self, switch: bool):
 		self.isPaused = switch
@@ -28,4 +29,4 @@ class ClipListener(QThread):
 
 	def stop(self):
 		self.__ThreadActive = False
-		self.terminate()
+		self.quit()

@@ -231,7 +231,7 @@ QListView::item:selected{
              <item>
               <widget class="QLabel" name="shortcutLabel1">
                <property name="text">
-                <string>Clear: ctrl+alt+c</string>
+                <string>Clear: CTRL+ALT+H</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -241,7 +241,7 @@ QListView::item:selected{
              <item>
               <widget class="QLabel" name="shortcutLabel2">
                <property name="text">
-                <string>Clear: ctrl+alt+c</string>
+                <string>Last: CTRL+ALT+Z</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -251,7 +251,7 @@ QListView::item:selected{
              <item>
               <widget class="QLabel" name="shortcutLabel3">
                <property name="text">
-                <string>Clear: ctrl+alt+c</string>
+                <string>Grab: CTRL+ALT+G</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
@@ -261,7 +261,7 @@ QListView::item:selected{
              <item>
               <widget class="QLabel" name="shortcutLabel4">
                <property name="text">
-                <string>Clear: ctrl+alt+c</string>
+                <string>Quit: CTRL+Q</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>

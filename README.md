@@ -1,12 +1,19 @@
 # [Objectives]
-ClipPy aims to solve a commonly encountered ergonomic issue when copying content into the clipboard, by tracing back it's history, filtering it accoringly and giving it's users the ability to track, save, store and reuse the current and past content at will.
+ClipPy aims to solve a commonly encountered ergonomic issue when copying content into the clipboard, by tracing back it's history, filtering it accordingly and giving it's users the ability to track, save, store and reuse the current and paste content at will.
 
 
-# [TODO]
+# [TODO] - Priority Pool
+- [ ] Mess around with the Qt.Popup flag/type to make the window dissapear and fallback to tray upon losing focus
+- [ ] Clip transform/filter method in the ClipListener worker to strip and such 
+- [ ] Save history locally on the machine, figure out data structure (JSON?)
+
+# [Implemented TODOS]
+- [x] Make the app globally summonable  (<--) Gonna build a hotkeylistener worker
 - [x] Listen to clipboard events and add new entries to the stack
 - [x] Move selection to the top of the stack upon double click
 - [x] Notify when operation has been performed on the clipboard
-
+- [x] Implemented Shortcuts (not globally) Clear, Last, Grab, Quit
+- [x] Search bar to filter through the entries
 
 # [Features]
 - [x] Browsing plain-text clipboard history and automatically pasting any selected entry to the clipboard.
@@ -16,6 +23,9 @@ ClipPy aims to solve a commonly encountered ergonomic issue when copying content
 - [ ] Imgur upload support. @ https://github.com/Imgur/imgurpython
 - [ ] Export clipboard history as a plain-text file.
 - [ ] Support hyper links urls and open in browser tab.
+
+# [Known Issues/ Bug Report]
+> None so far, strange huh?
 
 # [Support]
 + On Windows, no additional modules are needed.
