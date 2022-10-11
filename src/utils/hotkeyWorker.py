@@ -23,8 +23,9 @@ class HotKeyWorker(QThread):
 	        hotkey: partial(self.combinationDetected.emit, hotkey[-1]) for hotkey in combinations # <--
 	    }, ((hotkey, hotkey[-1]) for hotkey in combinations)
    	
-	def doWork(self):
-		print("yo this is work")
+	@property
+	def isThreadActive(self):
+		return self.___isThreadActive
 
 	def stop(self):
 		self.__isThreadActive = False
