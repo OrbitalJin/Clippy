@@ -9,9 +9,15 @@ from utils.hotkeyWorker import HotKeyWorker
 from utils.clipWorker import ClipListener
 
 import pyperclip as cliplib
-import sys, os, notify2
+import sys, os
+
+if sys.platform in "linux darwin": host = "*nix"; import notify2
+else: host = "win32"; from win10toast_click import ToastNotifier
+if host == "win32": winNotify = ToastNotifier()
+else: notify2.init("ClipPy - Notifier")
 
 class App(QMainWindow):
+
 	def __init__(self):
 		QMainWindow.__init__(self)
 		self.ui = Ui_MainWindow()
@@ -20,8 +26,7 @@ class App(QMainWindow):
 		self.adjustUi()
 
 		self.ClipListener = ClipListener()
-		self.ClipListener.start()
-		notify2.init("ClipPy - Notifier")
+		self.ClipListener.start()	
 		
 		self.HotKeys = ['Ctrl+ALT+H', 'Ctrl+ALT+Z', 'Ctrl+ALT+C']
 		self.HotKeyListener = HotKeyWorker(self.HotKeys)
@@ -35,7 +40,7 @@ class App(QMainWindow):
 	def adjustUi(self):
 		self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Popup)
 		self.setWindowTitle("ClipPy")
-		# self.setRoundEdges()
+		self.setRoundEdges()
 		self.setFocus()
 		self.ui.searchBar.setFocus()
 		self.ui.searchBar.setContextMenuPolicy(Qt.NoContextMenu)
@@ -94,12 +99,12 @@ class App(QMainWindow):
 		
 		cliplib.copy(item.text())
 		self.pushClipToDataBase(item.text())
-		self.notify("ClipPy - Notifier", f"{item.text()} copied to the clipboard!", 3500)
+		self.notify("ClipPy - Notifier", f"{item.text()} copied to the clipboard!", 1000)
 
 		self.ui.statusLabel.setStyleSheet("color: #5E81AC;")
 		self.ui.statusLabel.setText(f"Entry copied to the clipboard!")
 		QTimer.singleShot(3500, sling_method)
-		QTimer.singleShot(500, self.hide)
+		QTimer.singleShot(400, self.hide)
 
 # Methods:
 	def pushClipToDataBase(self, clip: str):
@@ -111,9 +116,11 @@ class App(QMainWindow):
 			item.setHidden(not text.lower() in item.text().lower())
 
 	def notify(self, title: str, msg: str, timeout: int):
-		notification = notify2.Notification(summary = title, message = msg)
-		notification.set_timeout(timeout)	
-		notification.show()
+		if host == "*unix":
+			notification = notify2.Notification(summary = title, message = msg)
+			notification.set_timeout(timeout)	
+			notification.show()
+		else: winNotify.show_toast(title, msg, duration = int(timeout/1000), threaded = True)
 
 # Internal Events:
 	def hideEvent(self, event: QEvent):
@@ -158,8 +165,16 @@ class App(QMainWindow):
 		sys.exit(0)											# To fully close the application flagged as a popup
 
 # Entry Point:
+def fontCheck(app):
+    font = QFont("Segoe UI")
+    font.setPointSize(11)
+    if host == "win32": app.setFont(font)
+    elif host in "linux darwin": pass
+    return app
+
 if __name__ == "__main__":
-	app = QApplication(sys.argv)
-	window = App()
-	window.show()
-	sys.exit(app.exec_())
+    app = QApplication(sys.argv)
+    app = fontCheck(app)
+    window = App()
+    window.show()
+    sys.exit(app.exec_())
