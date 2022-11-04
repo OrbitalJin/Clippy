@@ -4,20 +4,23 @@ from PySide2.QtWidgets import *
 
 from ui.interface import Ui_MainWindow
 from components.scrollbar import CScrollBar
+from components.clipWidget import ClipWidget
 
 from utils.hotkeyWorker import HotKeyWorker
 from utils.clipWorker import ClipListener
 
+from tinydb import TinyDB, Query
 import pyperclip as cliplib
 import sys, os
 
-if sys.platform in "linux darwin": host = "*nix"; import notify2
+if sys.platform in "linux darwin": host = "*unix"; import notify2
 else: host = "win32"; from win10toast_click import ToastNotifier
 if host == "win32": winNotify = ToastNotifier()
 else: notify2.init("ClipPy - Notifier")
 
-class App(QMainWindow):
+PATH_TO_DB = "./data/db.json"
 
+class App(QMainWindow):
 	def __init__(self):
 		QMainWindow.__init__(self)
 		self.ui = Ui_MainWindow()
@@ -35,6 +38,8 @@ class App(QMainWindow):
 		self.connectSignalsAndSlots()
 		self.setupShortcuts()
 		self.center()
+
+		self.loadClips()
 
 # Setup:
 	def adjustUi(self):
@@ -76,10 +81,14 @@ class App(QMainWindow):
 # Slots:
 	@Slot()
 	def newClipEventSlot(self, clip: str):
-		size = QSize(15, 20)
-		item = QListWidgetItem(clip)
-		item.setSizeHint(size)
+		item = QListWidgetItem()
+		widget = ClipWidget(clip, item, self)
+		item.setSizeHint(QSize(15, 28))
 		self.ui.clipsListWidget.insertItem(0, item)
+		self.ui.clipsListWidget.setItemWidget(item, widget)
+		# item.setSizeHint(widget.sizeHint())
+
+
 
 	@Slot()
 	def hotkeySlot(self, cmd: str):
@@ -96,8 +105,9 @@ class App(QMainWindow):
 		def  sling_method():
 			self.ui.statusLabel.setText("ClipPy v.0.1")
 			self.ui.statusLabel.setStyleSheet("color: grey;")
-		
-		cliplib.copy(item.text())
+
+		txt = self.ui.clipsListWidget.itemWidget(item).getClipContent()
+		cliplib.copy(txt)
 		self.pushClipToDataBase(item.text())
 		self.notify("ClipPy - Notifier", f"{item.text()} copied to the clipboard!", 1000)
 
@@ -107,6 +117,14 @@ class App(QMainWindow):
 		QTimer.singleShot(400, self.hide)
 
 # Methods:
+	def removeClipWidgetItem(self, item: QListWidgetItem):
+		index = self.ui.clipsListWidget.indexFromItem(item).row()
+		item = self.ui.clipsListWidget.takeItem(index)
+
+	def loadClips(self):
+		self.db = TinyDB(PATH_TO_DB)
+		for clip in self.db: self.newClipEventSlot(clip["content"])
+
 	def pushClipToDataBase(self, clip: str):
 		pass
 
