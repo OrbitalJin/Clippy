@@ -3,6 +3,7 @@ ClipPy aims to solve a commonly encountered ergonomic issue when copying content
 
 
 # TODO - Priority Pool
+- [ ] TODO: ReImplement the Clipboard logic using `QApplication.clipboard()`, it supports images too.
 - [ ] TODO: Save history locally on the machine. Considering tinyDB as a DB backend: https://tinydb.readthedocs.io/en/latest/index.html
 
 # Checked TODOs
