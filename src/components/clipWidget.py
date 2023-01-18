@@ -4,12 +4,15 @@ from PySide2.QtGui import *
 
 class ClipWidget(QWidget):
     # https://stackoverflow.com/questions/73302473/pyqt5-delete-a-qlistwidgetitem-when-button-in-widget-is-pressed
-    def __init__ (self, content, item, parent):
+    def __init__ (self, data, item, parent):
         super(ClipWidget, self).__init__(parent)
-        self.clipContent = content
-        self.LabelContent = self.clipContent.split("\n")[0].strip() if self.clipContent.count("\n") else self.clipContent
-        self._parentCaller = parent
+        self._data = data
+        self._parent = parent
         self._item = item
+        self._id = self._data["id"]
+
+        self.clipContent = self._data["content"]
+        self.LabelContent = self.clipContent.split("\n")[0].strip() if self.clipContent.count("\n") else self.clipContent
 
         self.textQVBoxLayout = QVBoxLayout()
         self.textLabel = QLabel()
@@ -35,6 +38,6 @@ class ClipWidget(QWidget):
         return self.clipContent
 
     def deleteSelfCallback(self):
-        self._parentCaller.removeClipWidgetItem(self._item)
-        print(self.textLabel.text())
+        self._parent.ItemManager.deleteItemFromDataBase(self._id)
+        self._parent.removeClipWidgetItem(self._item)
         self.deleteLater()

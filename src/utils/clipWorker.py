@@ -13,7 +13,7 @@ class ClipListener(QThread):
 		while self.__ThreadActive:
 			try:
 				if self.__ThreadActive:
-					clip.waitForNewPaste(timeout=1) 			# Timeout is set to 1 because this was preventing the QThread from safely quitting
+					clip.waitForNewPaste(timeout = 1) 			# Timeout is set to 1 because this was preventing the QThread from safely quitting
 					self.newClipSignalEvent.emit(clip.paste())
 				else: break
 			except: pass										# Passing here because the waitForNewPaste will raise a tiemout expection

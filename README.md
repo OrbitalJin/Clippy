@@ -4,9 +4,9 @@ ClipPy aims to solve a commonly encountered ergonomic issue when copying content
 
 # TODO - Priority Pool
 - [ ] TODO: ReImplement the Clipboard logic using `QApplication.clipboard()`, it supports images too.
-- [ ] TODO: Save history locally on the machine. Considering tinyDB as a DB backend: https://tinydb.readthedocs.io/en/latest/index.html
 
 # Checked TODOs
+- [X] DONE: Save history locally on the machine. Using [TinyDB](https://tinydb.readthedocs.io/en/latest/index.html) as a DB backend.
 - [X] DONE: Added a self destruct button to each ClipWidget by passing a referecence to the item and parent (app), and calling the `removeClipWidget` method.
 - [X] DONE: Mess around with the Qt.Popup flag/type to make the window dissapear and fallback to tray upon losing focus.
 - [x] DONE: Make the app globally summonable.
@@ -28,7 +28,7 @@ ClipPy aims to solve a commonly encountered ergonomic issue when copying content
     * [ ] Organize by date or filter parameters.
 + Images:
     * [ ] Image support.
-    * [ ] Imgur upload support. @ https://github.com/Imgur/imgurpython
+    * [ ] [Imgur upload support](https://github.com/Imgur/imgurpython). 
 + Miscellaneous:
     * [ ] Export clipboard history as a plain-text file.
 

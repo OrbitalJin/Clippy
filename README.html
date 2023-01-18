@@ -1070,10 +1070,11 @@ body .markdown-body
 <p>ClipPy aims to solve a commonly encountered ergonomic issue when copying content into the clipboard, by tracing back it&rsquo;s history, filtering it accordingly and giving it&rsquo;s users the ability to track, save, store and reuse the current and paste content at will.</p>
 <h1 id="todo-priority-pool">TODO - Priority Pool<a class="headerlink" href="#todo-priority-pool" title="Permanent link"></a></h1>
 <ul class="task-list">
-<li class="task-list-item"><input type="checkbox" disabled/> TODO: Save history locally on the machine. Considering tinyDB as a DB backend: <a href="https://tinydb.readthedocs.io/en/latest/index.html">https://tinydb.readthedocs.io/en/latest/index.html</a></li>
+<li class="task-list-item"><input type="checkbox" disabled/> TODO: ReImplement the Clipboard logic using <code>QApplication.clipboard()</code>, it supports images too.</li>
 </ul>
 <h1 id="checked-todos">Checked TODOs<a class="headerlink" href="#checked-todos" title="Permanent link"></a></h1>
 <ul class="task-list">
+<li class="task-list-item"><input type="checkbox" disabled checked/> DONE: Save history locally on the machine. Using <a href="https://tinydb.readthedocs.io/en/latest/index.html">TinyDB</a> as a DB backend.</li>
 <li class="task-list-item"><input type="checkbox" disabled checked/> DONE: Added a self destruct button to each ClipWidget by passing a referecence to the item and parent (app), and calling the <code>removeClipWidget</code> method.</li>
 <li class="task-list-item"><input type="checkbox" disabled checked/> DONE: Mess around with the Qt.Popup flag/type to make the window dissapear and fallback to tray upon losing focus.</li>
 <li class="task-list-item"><input type="checkbox" disabled checked/> DONE: Make the app globally summonable.</li>
@@ -1101,7 +1102,7 @@ body .markdown-body
 </li>
 <li>Images:<ul class="task-list">
 <li class="task-list-item"><input type="checkbox" disabled/> Image support.</li>
-<li class="task-list-item"><input type="checkbox" disabled/> Imgur upload support. @ <a class="magiclink magiclink-github magiclink-repository" href="https://github.com/Imgur/imgurpython" title="GitHub Repository: Imgur/imgurpython">Imgur/imgurpython</a></li>
+<li class="task-list-item"><input type="checkbox" disabled/> <a href="https://github.com/Imgur/imgurpython">Imgur upload support</a>. </li>
 </ul>
 </li>
 <li>Miscellaneous:<ul class="task-list">

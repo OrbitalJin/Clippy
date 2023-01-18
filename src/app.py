@@ -8,9 +8,11 @@ from components.clipWidget import ClipWidget
 
 from utils.hotkeyWorker import HotKeyWorker
 from utils.clipWorker import ClipListener
+from utils.itemManager import ItemManager
 
 from tinydb import TinyDB, Query
 import pyperclip as cliplib
+from pprint import pprint
 import sys, os
 
 if sys.platform in "linux darwin": host = "*unix"; import notify2
@@ -18,7 +20,8 @@ else: host = "win32"; from win10toast_click import ToastNotifier
 if host == "win32": winNotify = ToastNotifier()
 else: notify2.init("ClipPy - Notifier")
 
-PATH_TO_DB = "./data/db.json"
+PATH_TO_DB   = "./data/db.json"
+PATH_TO_ICON = "../res/icons/icon_clipboard.svg"
 
 class App(QMainWindow):
 	def __init__(self):
@@ -29,23 +32,24 @@ class App(QMainWindow):
 		self.adjustUi()
 
 		self.ClipListener = ClipListener()
-		self.ClipListener.start()	
-		
+		self.ClipListener.start()
+
 		self.HotKeys = ['Ctrl+ALT+H', 'Ctrl+ALT+Z', 'Ctrl+ALT+C']
 		self.HotKeyListener = HotKeyWorker(self.HotKeys)
 		self.HotKeyListener.start()
+
+		self.ItemManager = ItemManager("./data/db.json", self)
+		self.ItemManager.populateList()
 
 		self.connectSignalsAndSlots()
 		self.setupShortcuts()
 		self.center()
 
-		self.loadClips()
-
 # Setup:
 	def adjustUi(self):
 		self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Popup)
 		self.setWindowTitle("ClipPy")
-		self.setRoundEdges()
+		self.setWindowOpacity(.95)
 		self.setFocus()
 		self.ui.searchBar.setFocus()
 		self.ui.searchBar.setContextMenuPolicy(Qt.NoContextMenu)
@@ -55,7 +59,7 @@ class App(QMainWindow):
 		QShortcut(QKeySequence('Ctrl+Q'), self).activated.connect(self.closeApp)
 
 	def setupSystemTray(self):
-		self.TrayIcon = QSystemTrayIcon(QIcon("../res/icons/icon_clipboard.svg"))
+		self.TrayIcon = QSystemTrayIcon(QIcon(PATH_TO_ICON))
 		self.TrayIcon.setToolTip("ClipPy")
 		self.TrayMenu = QMenu(self)
 		exitAction = self.TrayMenu.addAction("Exit")
@@ -74,6 +78,8 @@ class App(QMainWindow):
 
 		self.ui.clipsListWidget.itemActivated.connect(self.itemClipActivatedCallback)
 		self.ui.searchBar.textChanged.connect(lambda text: self.filterClipboard(text))
+		self.ui.searchBar.returnPressed.connect(lambda: self.ui.clipsListWidget.setFocus())
+		self.ui.searchBar.returnPressed.connect(lambda: self.ui.clipsListWidget.setCurrentRow(0))
 
 		self.ui.settingsBtn.clicked.connect(lambda: self.HotKeyListener.doWork())
 		self.ui.closeAppBtn.clicked.connect(self.closeApp)
@@ -81,19 +87,12 @@ class App(QMainWindow):
 # Slots:
 	@Slot()
 	def newClipEventSlot(self, clip: str):
-		item = QListWidgetItem()
-		widget = ClipWidget(clip, item, self)
-		item.setSizeHint(QSize(15, 28))
-		self.ui.clipsListWidget.insertItem(0, item)
-		self.ui.clipsListWidget.setItemWidget(item, widget)
-		# item.setSizeHint(widget.sizeHint())
-
-
+		self.ItemManager.newItem(clip)
 
 	@Slot()
 	def hotkeySlot(self, cmd: str):
 		def c():
-			if not self.isVisible():self.center()
+			if not self.isVisible(): self.center()
 			self.setVisible(not self.isVisible())
 
 		if cmd == "h": self.ui.clipsListWidget.clear()
@@ -116,14 +115,13 @@ class App(QMainWindow):
 		QTimer.singleShot(3500, sling_method)
 		QTimer.singleShot(400, self.hide)
 
+	def itemClipSelectedCallback(self, item: QListWidgetItem):
+		self.ui.clipsListWidget.setItemSelected(item, True)
+
 # Methods:
 	def removeClipWidgetItem(self, item: QListWidgetItem):
 		index = self.ui.clipsListWidget.indexFromItem(item).row()
 		item = self.ui.clipsListWidget.takeItem(index)
-
-	def loadClips(self):
-		self.db = TinyDB(PATH_TO_DB)
-		for clip in self.db: self.newClipEventSlot(clip["content"])
 
 	def pushClipToDataBase(self, clip: str):
 		pass
@@ -131,12 +129,14 @@ class App(QMainWindow):
 	def filterClipboard(self, text: str):
 		for index in range(self.ui.clipsListWidget.count()):
 			item = self.ui.clipsListWidget.item(index)
-			item.setHidden(not text.lower() in item.text().lower())
+			widget = self.ui.clipsListWidget.itemWidget(item)
+			content = widget.getClipContent()
+			item.setHidden(not text.lower() in content.lower())
 
 	def notify(self, title: str, msg: str, timeout: int):
 		if host == "*unix":
 			notification = notify2.Notification(summary = title, message = msg)
-			notification.set_timeout(timeout)	
+			notification.set_timeout(timeout)
 			notification.show()
 		else: winNotify.show_toast(title, msg, duration = int(timeout/1000), threaded = True)
 
@@ -151,12 +151,12 @@ class App(QMainWindow):
 
 # Private:
 	def setRoundEdges(self):
-	    self.radius = 8.0
-	    self.path = QPainterPath()
-	    self.path.addRoundedRect(QRectF(self.rect()), self.radius, self.radius)
-	    self.mask = QRegion(self.path.toFillPolygon().toPolygon())
-	    self.setMask(self.mask)
-
+		self.radius = 8.0
+		self.path = QPainterPath()
+		self.path.addRoundedRect(QRectF(self.rect()), self.radius, self.radius)
+		self.mask = QRegion(self.path.toFillPolygon().toPolygon())
+		self.setMask(self.mask)
+	
 	def center(self):
 		self.x_shift = 0 #-10
 		self.y_shift = 0 #-360
