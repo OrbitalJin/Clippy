@@ -1,28 +1,35 @@
-# Goal
-ClipPy aims to solve a commonly encountered ergonomic issue when copying content into the clipboard, by tracing back it's history, filtering it accordingly and giving it's users the ability to track, save, store and reuse the current and paste content at will.
+# Clippy
+Clippy is a slick & modern clipboard manager written in Python using the Qt Framework alongside `PySideX`. It aims to solve a commonly encountered ergonomic issue when copying content into the clipboard by provides a set of ergonomic tools & utilities to, store, manage & filter through your clipboard virtual history. Clippy listens to your operating system's defualt clipbaord daemon, when it detects content change, the `clipEvent` gets triggered, then the content of the clipboard gets added as a new entry to the history and ultimately pushed to a local database.
 
+<p align="center">
+  <img src="./res/preview/usage.gif" />
+</p>
 
-# TODO - Priority Pool
-- [ ] TODO: Implement QuickTrigger (for recent clipboard, 1...9).
-- [ ] TODO: Implement ShortKey (Paste preset entries).
-- [ ] TODO: Implement Settings Page.
-- [ ] TODO: ReImplement the Clipboard logic using `QApplication.clipboard()`, it supports images too.
+## Getting Started
++ Head to `releases`, then selected and download the approriate binary
+depending on your Operating System.
++ Or, you could clone this repo on your machine using:
+```bash
+$ > git clone https://github.com/QuaeriteVeritatis/ClipPy && cd ./ClipPy
+```
+Install the dependencies:
+```bash
+$ > pip3 install -r requirements.txt
+```
+Then run it as is:
+```bash
+$ > python3 ./src/app.py &
+```
++ Alternatively you could compile/build it from source using something like [pyinstaller](https://github.com/pyinstaller/pyinstaller.git).
 
-# Checked TODOs
-- [X] DONE: Save history locally on the machine. Using [TinyDB](https://tinydb.readthedocs.io/en/latest/index.html) as a DB backend.
-- [X] DONE: Added a self destruct button to each ClipWidget by passing a referecence to the item and parent (app), and calling the `removeClipWidget` method.
-- [X] DONE: Mess around with the Qt.Popup flag/type to make the window dissapear and fallback to tray upon losing focus.
-- [x] DONE: Make the app globally summonable.
-- [x] DONE: Listen to clipboard events and add new entries to the stack.
-- [x] DONE: Move selection to the top of the stack upon double click if it's different from the current top of the stack.
-- [x] DONE: Notify when operation has been performed on the clipboard.
-- [x] DONE: Implemented Shortcuts (not globally) Clear, Last, Grab, Quit.
-- [x] DONE: Search bar to filter through the entries.
+## Usage
+Once you've launched Clippy, you can summon the window using the shortcut `ctrl + alt + c`. Then you can filter through the history by typing in the search bar. To clear your clipboard history, you can use the shortcut `ctrl + alt + x`. Please do note that this will only empty the list displayed, not purge the database. Please visit the settings page for database & storge 
+related operations.
 
-# Dropped TODOs
-- [ ] Clip transform/filter method in the ClipListener worker to strip and such.
+## Setup the Daemon
+> coming soon
 
-# Features
+## Features
 + Ergonomy:
     * [X] Shortcut summoning.
     * [ ] Support hyper links urls and open in browser tab.
@@ -35,11 +42,29 @@ ClipPy aims to solve a commonly encountered ergonomic issue when copying content
 + Miscellaneous:
     * [ ] Export clipboard history as a plain-text file.
 
-# Known Issues / Bug Report
+## TODO List
+- [ ] TODO: Implement QuickTrigger (for recent clipboard, 1...9).
+- [ ] TODO: Implement ShortKey (Paste preset entries).
+- [ ] TODO: Implement Settings Page.
+- [ ] TODO: ReImplement the Clipboard logic using `QApplication.clipboard()`, it supports images too.
+- [X] DONE: Save history locally on the machine. Using [TinyDB](https://tinydb.readthedocs.io/en/latest/index.html) as a DB backend.
+- [X] DONE: Added a self destruct button to each ClipWidget by passing a referecence to the item and parent (app), and calling the `removeClipWidget` method.
+- [X] DONE: Mess around with the Qt.Popup flag/type to make the window dissapear and fallback to tray upon losing focus.
+- [x] DONE: Make the app globally summonable.
+- [x] DONE: Listen to clipboard events and add new entries to the stack.
+- [x] DONE: Move selection to the top of the stack upon double click if it's different from the current top of the stack.
+- [x] DONE: Notify when operation has been performed on the clipboard.
+- [x] DONE: Implemented Shortcuts (not globally) Clear, Last, Grab, Quit.
+- [x] DONE: Search bar to filter through the entries.
+
+## Dropped
+- [ ] Clip transform/filter method in the ClipListener worker to strip and such.
+
+## Issues Reported
 - [ ] First element selected but not highlighted after re-summoning. 
 > ~~None so far, strange huh?~~
 
-# Fixed Bugs
+## Issues addressed
 - [X] Text overflows of custom item instead of truncating to a normalized size. *(Sort of fixed)*
 - [X] Fixed: Getting the text from a QListWidget's Widget instead of the item itself.
 - [X] Fixed: Notification backend conflicting between different operating systems.

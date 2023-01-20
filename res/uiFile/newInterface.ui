@@ -48,6 +48,10 @@ QLabel{
 	background-color:  #2F343F;
 }
 
+#searchBarFrame{
+	background-color: #536D79;
+}
+
 /*Objects*/
 #searchBar{
 	background-color: #262A32;
@@ -108,9 +112,7 @@ QLabel{
           </size>
          </property>
          <property name="styleSheet">
-          <string notr="true">#searchBarFrame{
-	background-color: #536D79;
-}</string>
+          <string notr="true"/>
          </property>
          <property name="frameShape">
           <enum>QFrame::StyledPanel</enum>
