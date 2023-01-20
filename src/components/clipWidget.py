@@ -16,13 +16,15 @@ class ClipWidget(QWidget):
 
         self.textQVBoxLayout = QVBoxLayout()
         self.textLabel = QLabel()
+        self.textLabel.setStyleSheet("color: #8F8F8F;")
+
 
         self.allQHBoxLayout = QHBoxLayout()
-        self.allQHBoxLayout.setContentsMargins(6, 4, 6, 4)
+        self.allQHBoxLayout.setContentsMargins(6, 4, 15, 4)
 
         self.deleteSelfBtn = QPushButton("x")
         self.deleteSelfBtn.setCursor(QCursor(Qt.PointingHandCursor))
-        self.deleteSelfBtn.setStyleSheet("color: grey;")
+        self.deleteSelfBtn.setStyleSheet("color: #8F8F8F;")
         self.deleteSelfBtn.clicked.connect(self.deleteSelfCallback)
 
         self.textQVBoxLayout.addWidget(self.textLabel)

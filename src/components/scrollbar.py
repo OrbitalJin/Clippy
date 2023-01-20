@@ -7,12 +7,12 @@ class CScrollBar(QScrollBar):
          QScrollBar:vertical {
             border: none;
             background: rgb(52, 59, 72);
-            width: 8px;
+            width: 3px;
             margin: 21px 0 21px 0;
             border-radius: 0px;
          }
          QScrollBar::handle:vertical {  
-            background: #5E81AC;
+            background: #536D79;
             min-height: 25px;
             border-radius: 4px
          }
@@ -26,8 +26,7 @@ class CScrollBar(QScrollBar):
              subcontrol-origin: margin;
          }
          QScrollBar::sub-line:vertical {
-            borde
-                                r: none;
+            border: none;
             background: rgb(55, 63, 77);
              height: 20px;
             border-top-left-radius: 4px;

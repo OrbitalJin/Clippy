@@ -3,6 +3,9 @@ ClipPy aims to solve a commonly encountered ergonomic issue when copying content
 
 
 # TODO - Priority Pool
+- [ ] TODO: Implement QuickTrigger (for recent clipboard, 1...9).
+- [ ] TODO: Implement ShortKey (Paste preset entries).
+- [ ] TODO: Implement Settings Page.
 - [ ] TODO: ReImplement the Clipboard logic using `QApplication.clipboard()`, it supports images too.
 
 # Checked TODOs
@@ -33,10 +36,11 @@ ClipPy aims to solve a commonly encountered ergonomic issue when copying content
     * [ ] Export clipboard history as a plain-text file.
 
 # Known Issues / Bug Report
-- [X] Text overflows of custom item instead of truncating to a normalized size. *(Sort of fixed)*.
+- [ ] First element selected but not highlighted after re-summoning. 
 > ~~None so far, strange huh?~~
 
 # Fixed Bugs
+- [X] Text overflows of custom item instead of truncating to a normalized size. *(Sort of fixed)*
 - [X] Fixed: Getting the text from a QListWidget's Widget instead of the item itself.
 - [X] Fixed: Notification backend conflicting between different operating systems.
 - [x] Fixed: QDesktop deprecation warning by replacing `QApplication.desktop().screenNumber` with `QGuiApplication.screenAt(QApplication.desktop())`.
