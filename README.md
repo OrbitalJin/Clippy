@@ -1,5 +1,5 @@
 # Clippy
-Clippy is a slick & modern clipboard manager written in Python using the Qt Framework alongside `PySideX`. It aims to solve a commonly encountered ergonomic issue when copying content into the clipboard by provides a set of ergonomic tools & utilities to, store, manage & filter through your clipboard virtual history. Clippy listens to your operating system's defualt clipbaord daemon, when it detects content change, the `clipEvent` gets triggered, then the content of the clipboard gets added as a new entry to the history and ultimately pushed to a local database.
+Clippy is a sleek & modern clipboard manager written in Python using the Qt Framework alongside `PySideX`. It aims to solve a commonly encountered ergonomic issue when copying content into the clipboard by provides a set of ergonomic tools & utilities to, store, manage & filter through your clipboard virtual history. Clippy listens to your operating system's defualt clipbaord daemon, when it detects content change, the `clipEvent` gets triggered, then the content of the clipboard gets added as a new entry to the history and ultimately pushed to a local database.
 
 <p align="center">
   <img src="./res/preview/usage.gif" />
