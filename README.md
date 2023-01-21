@@ -10,7 +10,7 @@ Clippy is a slick & modern clipboard manager written in Python using the Qt Fram
 depending on your Operating System.
 + Or, you could clone this repo on your machine using:
 ```bash
-$ > git clone https://github.com/QuaeriteVeritatis/ClipPy && cd ./ClipPy
+$ > git clone https://github.com/QuaeriteVeritatis/Clippy && cd ./Clippy
 ```
 Install the dependencies:
 ```bash
@@ -46,7 +46,10 @@ related operations.
 - [ ] TODO: Implement QuickTrigger (for recent clipboard, 1...9).
 - [ ] TODO: Implement ShortKey (Paste preset entries).
 - [ ] TODO: Implement Settings Page.
-- [ ] TODO: ReImplement the Clipboard logic using `QApplication.clipboard()`, it supports images too.
+- [ ] TODO: Implement `clipManager.ClipManager.processPixmap`.
+- [ ] TODO: Implement `clipManager.ClipManager.processImage`.
+
+- [X] DONE: ReImplement the Clipboard logic using `QApplication.clipboard()`, it supports images too.
 - [X] DONE: Save history locally on the machine. Using [TinyDB](https://tinydb.readthedocs.io/en/latest/index.html) as a DB backend.
 - [X] DONE: Added a self destruct button to each ClipWidget by passing a referecence to the item and parent (app), and calling the `removeClipWidget` method.
 - [X] DONE: Mess around with the Qt.Popup flag/type to make the window dissapear and fallback to tray upon losing focus.
@@ -57,14 +60,11 @@ related operations.
 - [x] DONE: Implemented Shortcuts (not globally) Clear, Last, Grab, Quit.
 - [x] DONE: Search bar to filter through the entries.
 
-## Dropped
-- [ ] Clip transform/filter method in the ClipListener worker to strip and such.
-
 ## Issues Reported
-- [ ] First element selected but not highlighted after re-summoning. 
 > ~~None so far, strange huh?~~
 
 ## Issues addressed
+- [X] First element selected but not highlighted after re-summoning. 
 - [X] Text overflows of custom item instead of truncating to a normalized size. *(Sort of fixed)*
 - [X] Fixed: Getting the text from a QListWidget's Widget instead of the item itself.
 - [X] Fixed: Notification backend conflicting between different operating systems.

@@ -3,27 +3,24 @@ from PySide2.QtCore import *
 from PySide2.QtWidgets import *
 
 from ui.interface import Ui_MainWindow
+
 from components.scrollbar import CScrollBar
 from components.clipWidget import ClipWidget
 
-from utils.hotkeyWorker import HotKeyWorker
-from utils.clipWorker import ClipListener
+from utils.hotkeyManager import HotKeyManager
+from utils.clipManager import ClipManager
 from utils.itemManager import ItemManager
 
-from tinydb import TinyDB, Query
 import pyperclip as cliplib
 from pprint import pprint
-import sys, os
+import notify2, sys, os
 
-if sys.platform in "linux darwin": host = "*unix"; import notify2
-else: host = "win32"; from win10toast_click import ToastNotifier
-if host == "win32": winNotify = ToastNotifier()
-else: notify2.init("ClipPy - Notifier")
-
+HOST 		 = sys.platform
 PATH_TO_DB   = "./data/db.json"
 PATH_TO_ICON = "../res/icons/icon_clipboard.svg"
 
 class App(QMainWindow):
+	notify2.init("ClipPy - Notifier")
 	def __init__(self):
 		QMainWindow.__init__(self)
 		self.ui = Ui_MainWindow()
@@ -31,12 +28,11 @@ class App(QMainWindow):
 		self.setupSystemTray()
 		self.adjustUi()
 
-		self.ClipListener = ClipListener()
-		self.ClipListener.start()
-
-		self.HotKeys = ['Ctrl+ALT+H', 'Ctrl+ALT+Z', 'Ctrl+ALT+C']
-		self.HotKeyListener = HotKeyWorker(self.HotKeys)
+		self.HotKeys = ['Ctrl+ALT+C']
+		self.HotKeyListener = HotKeyManager(self.HotKeys)
 		self.HotKeyListener.start()
+
+		self.ClipboardManager = ClipManager(clipboard, self)
 
 		self.ItemManager = ItemManager(PATH_TO_DB, self)
 		self.ItemManager.populateList()
@@ -47,23 +43,24 @@ class App(QMainWindow):
 
 # Setup:
 	def adjustUi(self):
+		self.setWindowTitle("Clippy")
 		self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.Popup)
 		self.setAttribute(Qt.WA_TranslucentBackground)
-		self.setWindowTitle("ClipPy")
-		self.setWindowOpacity(.95)
+		self.setWindowOpacity(.70)
 		self.setFocus()
 		self.ui.searchBar.setFocus()
 		self.ui.searchBar.setContextMenuPolicy(Qt.NoContextMenu)
 		self.ui.clipsListWidget.setVerticalScrollBar(CScrollBar())
+		self.ui.clipsListWidget.setCurrentRow(-1)
 
 	def setupShortcuts(self):
-		QShortcut(QKeySequence('Ctrl+Q'), self).activated.connect(self.closeApp)
+		QShortcut(QKeySequence(Qt.Key_Delete), self).activated.connect(self.popItemFromTop)
+		QShortcut(QKeySequence(Qt.CTRL | Qt.Key_Q), self).activated.connect(self.closeApp)
 		QShortcut(QKeySequence(Qt.Key_Up), self).activated.connect(self.ItemManager.gotToPrevVisibleItem)
 		QShortcut(QKeySequence(Qt.Key_Down), self).activated.connect(self.ItemManager.gotToNextVisibleItem)
 
 	def connectSignalsAndSlots(self):
-		self.ClipListener.newClipSignalEvent.connect(lambda clip: self.newClipEventSlot(clip))
-		self.ClipListener.unavailableClipEvent.connect(lambda status: print(f"ClipListener: {status}"))
+		self.ClipboardManager.processedClip.connect(lambda payload: self.newClipEventSlot(payload))
 		self.HotKeyListener.combinationDetected.connect(lambda cmd: self.hotkeySlot(cmd))
 
 		self.ui.clipsListWidget.itemActivated.connect(self.itemClipActivatedCallback)
@@ -78,26 +75,25 @@ class App(QMainWindow):
 
 	@Slot()
 	def hotkeySlot(self, cmd: str):
-		def c():
-			if not self.isVisible(): self.center()
-			self.setVisible(not self.isVisible())
-
 		if cmd == "h": self.ui.clipsListWidget.clear()
 		if cmd == "z": self.itemClipActivatedCallback(self.ui.clipsListWidget.item(1)) if self.ui.clipsListWidget.count() > 1 else None
-		if cmd == "c": c()
+		if cmd == "c": self.summon()
 
 # Callbacks:
 	def itemClipActivatedCallback(self, item: QListWidgetItem):
-		content = self.ItemManager.getItemContent(item)
-		print(content)
-		cliplib.copy(content)
-		self.notify("ClipPy - Notifier", f"{item.text()} copied to the clipboard!", 1000)
-		QTimer.singleShot(400, self.hide)
+		itemData = self.ItemManager.getItemData(item)
+		self.ClipboardManager.pasteContentFromData(itemData)
+		self.notify(f"{item.text()} copied to the clipboard!", 500)
+		QTimer.singleShot(200, self.hide)
 
 # Methods:
 	def removeClipWidgetItem(self, item: QListWidgetItem):
 		index = self.ui.clipsListWidget.indexFromItem(item).row()
 		item = self.ui.clipsListWidget.takeItem(index)
+
+	def popItemFromTop(self):
+		item = self.ui.clipsListWidget.currentItem()
+		self.removeClipWidgetItem(item)
 
 	def filterClipboard(self, text: str):
 		for index in range(self.ui.clipsListWidget.count()):
@@ -105,23 +101,24 @@ class App(QMainWindow):
 			content = self.ItemManager.getItemContent(item)
 			item.setHidden(not text.lower() in content.lower())
 
-	def notify(self, title: str, msg: str, timeout: int):
-		if host == "*unix":
-			notification = notify2.Notification(summary = title, message = msg)
-			notification.set_timeout(timeout)
-			notification.show()
-		else: winNotify.show_toast(title, msg, duration = int(timeout/1000), threaded = True)
+	def notify(self, msg: str, timeout: int):
+		title = "ClipPy - Notifier"
+		notification = notify2.Notification(summary = title, message = msg)
+		notification.set_timeout(timeout)
+		notification.show()
+
+	def summon(self):
+		if not self.isVisible(): self.center()
+		self.setVisible(not self.isVisible())
 
 # Internal Events:
 	def hideEvent(self, event: QEvent):
 		self.TrayIcon.show()
-		self.ui.clipsListWidget.setCurrentRow(-1)
-		print("Hidden")
+		# self.ui.clipsListWidget.setCurrentRow(0)
 
 	def showEvent(self, event: QEvent):
 		self.TrayIcon.hide()
 		self.ui.searchBar.setFocus()
-		print("Shown")
 
 # Private:
 	def setupSystemTray(self):
@@ -154,13 +151,9 @@ class App(QMainWindow):
 		self.move(self.frame.topLeft().x()+self.x_shift, self.frame.topLeft().y()+self.y_shift)
 
 	def stopRunningThreads(self):
-		self.ClipListener.stop()
-		self.ClipListener.quit()
-		self.ClipListener.wait()
 		self.HotKeyListener.stop()
 		self.HotKeyListener.quit()
 		self.HotKeyListener.wait()
-		print("ClipListener Thread: ", self.ClipListener.isRunning())
 		print("HotKeyListener Thread: ", self.HotKeyListener.isRunning())
 
 	def closeApp(self):
@@ -173,13 +166,14 @@ class App(QMainWindow):
 def fontCheck(app):
     font = QFont("Segoe UI")
     font.setPointSize(11)
-    if host == "win32": app.setFont(font)
-    elif host in "linux darwin": pass
+    if HOST == "win32": app.setFont(font)
+    elif HOST in "linux darwin": pass
     return app
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     app = fontCheck(app)
+    clipboard = QApplication.clipboard()
     window = App()
     window.show()
     sys.exit(app.exec_())

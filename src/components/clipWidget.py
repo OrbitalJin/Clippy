@@ -9,37 +9,44 @@ class ClipWidget(QWidget):
         self._data = data
         self._parent = parent
         self._item = item
-        self._id = self._data["id"]
 
         self.clipContent = self._data["content"]
         self.LabelContent = self.clipContent.split("\n")[0].strip() if self.clipContent.count("\n") else self.clipContent
 
-        self.textQVBoxLayout = QVBoxLayout()
         self.textLabel = QLabel()
         self.textLabel.setStyleSheet("color: #8F8F8F;")
+        self.textLabel.setText(self.LabelContent)
 
-
-        self.allQHBoxLayout = QHBoxLayout()
-        self.allQHBoxLayout.setContentsMargins(6, 4, 15, 4)
+        self.textQVBoxLayout = QVBoxLayout()
+        self.textQVBoxLayout.addWidget(self.textLabel)
 
         self.deleteSelfBtn = QPushButton("x")
         self.deleteSelfBtn.setCursor(QCursor(Qt.PointingHandCursor))
         self.deleteSelfBtn.setStyleSheet("color: #8F8F8F;")
         self.deleteSelfBtn.clicked.connect(self.deleteSelfCallback)
 
-        self.textQVBoxLayout.addWidget(self.textLabel)
+        self.allQHBoxLayout = QHBoxLayout()
+        self.allQHBoxLayout.setContentsMargins(6, 4, 15, 4)
         self.allQHBoxLayout.addLayout(self.textQVBoxLayout, 1)
         self.allQHBoxLayout.addWidget(self.deleteSelfBtn, 0)
         self.setLayout(self.allQHBoxLayout)
-        self.setClipLabel(self.LabelContent)
 
-    def setClipLabel (self, text):
-        self.textLabel.setText(text)
+    def getClipData(self):
+        return self._data
     
     def getClipContent(self):
         return self.clipContent
 
+    def getClipType(self):
+        return self._data["type"]
+
+    def getClipID(self):
+        return self._data["id"]
+
+    def getClipDate(self):
+        return self._data["date"]
+
     def deleteSelfCallback(self):
-        self._parent.ItemManager.deleteItemFromDataBase(self._id)
+        self._parent.ItemManager.deleteItemFromDataBase(self._data["id"])
         self._parent.removeClipWidgetItem(self._item)
         self.deleteLater()

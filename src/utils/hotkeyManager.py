@@ -3,7 +3,7 @@ from functools import partial
 from pynput import keyboard
 
 # Replaced lambda by partial bc whereas lambda requires a var, partial binds a parameter upfront https://stackoverflow.com/questions/72956217/how-to-pass-arguments-to-functions-called-by-hot-keys-in-pynput
-class HotKeyWorker(QThread):
+class HotKeyManager(QThread):
 	combinationDetected = Signal(str)
 	def __init__(self, HotKeys: list):
 		QThread.__init__(self)
