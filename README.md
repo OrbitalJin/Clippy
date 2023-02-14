@@ -10,15 +10,15 @@ Clippy is a sleek & modern clipboard manager written in Python using the Qt Fram
 depending on your Operating System.
 + Or, you could clone this repo on your machine using:
 ```bash
-$ > git clone https://github.com/QuaeriteVeritatis/Clippy && cd ./Clippy
+$ git clone https://github.com/QuaeriteVeritatis/Clippy && cd ./Clippy
 ```
 Install the dependencies:
 ```bash
-$ > pip3 install -r requirements.txt
+$ pip3 install -r requirements.txt
 ```
 Then run it as is:
 ```bash
-$ > python3 ./src/app.py &
+$ python3 ./src/app.py &
 ```
 + Alternatively you could compile/build it from source using something like [pyinstaller](https://github.com/pyinstaller/pyinstaller.git).
 
